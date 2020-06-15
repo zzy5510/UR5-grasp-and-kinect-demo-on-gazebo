@@ -1,0 +1,9 @@
+sensors:
+  - sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater    #指定要监听点云的主题
+    point_cloud_topic: camera/depth/points  #此处为发布点云的话题名称
+    max_range: 3.0   #(以m为单位）不会使用比此更远的点
+    point_subsample: 1  #选择每个point_subsample点中的一个
+    padding_offset: 0.1 #填充的大小（以cm为单位）
+    padding_scale: 1.0   #填充的比例。
+    max_update_rate: 1.0
+    filtered_cloud_topic: filtered_cloud    #将发布过滤后的云的主题（主要用于调试）。过滤云是执行自我过滤后的结果云

@@ -1,0 +1,29 @@
+<package format="2">
+  <name>force_torque_sensor_controller</name>
+  <version>0.13.3</version>
+  <description>Controller to publish state of force-torque sensors</description>
+  <maintainer email="adolfo.rodriguez@pal-robotics.com">Adolfo Rodriguez Tsouroukdissian</maintainer>
+  <maintainer email="bence.magyar.robotics@gmail.com">Bence Magyar</maintainer>
+  <maintainer email="enrique.fernandez.perdomo@gmail.com">Enrique Fernandez</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">https://github.com/ros-controls/ros_controllers/wiki</url>
+  <url type="bugtracker">https://github.com/ros-controls/ros_controllers/issues</url>
+  <url type="repository">https://github.com/ros-controls/ros_controllers</url>
+
+  <author>Adolfo Rodriguez Tsouroukdissian</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>controller_interface</depend> 
+  <depend>geometry_msgs</depend> 
+  <depend>hardware_interface</depend> 
+  <depend>pluginlib</depend> 
+  <depend>realtime_tools</depend> 
+  <depend>roscpp</depend> 
+
+  <export>
+    <controller_interface plugin="${prefix}/force_torque_sensor_plugin.xml"/>
+  </export>
+</package>

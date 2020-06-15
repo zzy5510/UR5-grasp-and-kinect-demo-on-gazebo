@@ -1,0 +1,24 @@
+<robot name="hole">
+
+<link name="hole_link">
+<visual>
+<geometry>
+<mesh filename="package://ur_desc/meshes/hole.dae"/>
+</geometry>
+<material name="LightGrey">
+<color rgba="0.7 0.7 0.7 1.0"/>
+</material>
+</visual>
+<collision>
+<geometry>
+<mesh filename="package://ur_desc/meshes/zhuangpei.STL"/>
+</geometry>
+</collision>
+<inertial>
+<mass value="4.0"/>
+<origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+<inertia ixx="0.0061063308908" ixy="0.0" ixz="0.0" iyy="0.0061063308908" iyz="0.0" izz="0.01125"/>
+</inertial>
+</link>
+
+</robot>

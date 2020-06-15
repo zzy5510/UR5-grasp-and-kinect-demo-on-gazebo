@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<robot name="urwh" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<xacro:include filename="$(find ur_desc)/urdf/ur5_robotiq_85/model2.urdf" />
+	<xacro:include filename="$(find ur_desc)/urdf/ur5_robotiq_85/kinect.xacro" />
+	<!--<xacro:include filename="$(find ur_desc)/urdf/ur5_robotiq_85/kinect2.xacro" />-->
+
+	<xacro:property name="kinect_offset_x" value="-0.168" />
+	<xacro:property name="kinect_offset_y" value="1.25" />
+	<xacro:property name="kinect_offset_z" value="1.45" />
+
+	<xacro:property name="kinect2_offset_x" value="0" />
+	<xacro:property name="kinect2_offset_y" value="0" />
+	<xacro:property name="kinect2_offset_z" value="0.07" />
+
+	<!-- Attach the Kinect -->
+	<joint name="middle_frame_joint" type="fixed">
+		<origin xyz="${kinect_offset_x} ${kinect_offset_y} ${kinect_offset_z}" rpy="0 1.5707 0 " />
+		<parent link="base_link"/>
+		<child link="camera_link"/>
+	</joint>
+
+	<xacro:kinect_camera prefix="camera"/>
+<xacro:macro name="set_gazebo_collision" params="link_name">
+<gazebo reference="${link_name}">
+<kp>1e6</kp>
+<kd>100</kd>
+<mu1>0.6</mu1>
+<mu2>0.6</mu2>
+<minDepth>0.001</minDepth>
+<maxVel>0.1</maxVel>
+<material>Gazebo/Black</material>
+<turnGravityOff>true</turnGravityOff>
+</gazebo>
+</xacro:macro>
+<xacro:set_gazebo_collision link_name="gripper_finger_link1"/>
+<xacro:set_gazebo_collision link_name="gripper_finger_link2"/>
+
+<gazebo>
+   <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+        <arm>
+           <arm_name>urwh</arm_name>
+           <palm_link> wrist_3_link  </palm_link>
+           <gripper_link> gripper_finger_link1 </gripper_link>
+           <gripper_link> gripper_finger_link2 </gripper_link>
+        </arm>
+       <forces_angle_tolerance>100</forces_angle_tolerance>
+       <update_rate>30</update_rate>
+       <grip_count_threshold>4</grip_count_threshold>
+       <max_grip_count>8</max_grip_count>
+       <release_tolerance>0.005</release_tolerance>
+       <disable_collisions_on_attach>true</disable_collisions_on_attach>
+       <contact_topic>__default_topic__</contact_topic>
+    </plugin>
+</gazebo>
+
+
+
+</robot>

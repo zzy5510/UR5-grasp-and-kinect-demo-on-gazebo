@@ -1,0 +1,36 @@
+<package format="2">
+  <name>ros_controllers</name>
+  <version>0.13.3</version>
+  <description>Library of ros controllers</description>
+
+  <maintainer email="adolfo.rodriguez@pal-robotics.com">Adolfo Rodriguez Tsouroukdissian</maintainer>
+  <maintainer email="bence.magyar.robotics@gmail.com">Bence Magyar</maintainer>
+  <maintainer email="davetcoleman@gmail.com">Dave Coleman</maintainer>
+  <maintainer email="enrique.fernandez.perdomo@gmail.com">Enrique Fernandez</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/ros_controllers</url>
+  <url type="bugtracker">https://github.com/ros-controls/ros_controllers/issues</url>
+  <url type="repository">https://github.com/ros-controls/ros_controllers/</url>
+
+  <author>Wim Meeussen</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>diff_drive_controller</exec_depend>
+  <exec_depend>effort_controllers</exec_depend>
+  <exec_depend>force_torque_sensor_controller</exec_depend>
+  <exec_depend>forward_command_controller</exec_depend>
+  <exec_depend>gripper_action_controller</exec_depend>
+  <exec_depend>imu_sensor_controller</exec_depend>
+  <exec_depend>joint_state_controller</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
+  <exec_depend>position_controllers</exec_depend>
+  <exec_depend>rqt_joint_trajectory_controller</exec_depend>
+  <exec_depend>velocity_controllers</exec_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

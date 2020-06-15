@@ -1,0 +1,4 @@
+ <launch>
+ <include file="$(find urwh_moveit_config)/launch/urwh_planning_example_execution.launch" />
+ <node name ="pcl_transform" pkg ="smart_grasping_sandbox_sample" type ="pcltrans.py" />
+</launch>

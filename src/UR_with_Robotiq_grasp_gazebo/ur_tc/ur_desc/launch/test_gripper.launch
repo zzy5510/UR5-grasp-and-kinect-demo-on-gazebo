@@ -1,0 +1,18 @@
+<launch>
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="paused" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="verbose" value="false"/>
+        <arg name="physics" value='ode'/>
+        <env name="GAZEBO_MODEL_PATH" value="~/.gazebo/models:/workspace/src:/workspace/src/universal_robot:$GAZEBO_MODEL_PATH"/>
+    </include>
+
+    <param name="robot_description" command="$(find xacro)/xacro '$(find robotiq_85_description)/urdf/robotiq_85.urdf'"/>
+    
+    <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model"
+      args="-urdf -param robot_description -model robotiq_arg85_description" respawn="false" output="screen" />
+    
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+
+</launch>

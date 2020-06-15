@@ -1,0 +1,36 @@
+<launch>
+  <arg name="gui" default="true"/>
+  <arg name="start_gazebo" default="true"/>
+  <arg name="limited" default="false"/>
+  <arg name="paused" default="false"/>
+  <arg name="gzweb" default="false"/>
+  <arg name="verbose" default="false"/>
+  <arg name="sim" default="true"/>
+
+  <group if="$(arg start_gazebo)">
+    <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(find smart_grasping_sandbox_sample)/world/world_work.world"/>
+      <arg name="paused" value="$(arg paused)"/>
+      <arg name="gui" value="$(arg gui)"/>
+      <arg name="use_sim_time" value="$(arg sim)"/>
+      <arg name="verbose" value="$(arg verbose)"/>
+      <arg name="physics" value="ode"/>
+      <env name="GAZEBO_MODEL_PATH" value="~/.gazebo/models:/workspace/src:/workspace/src/universal_robot:${GAZEBO_MODEL_PATH}"/>
+    </include>
+  </group>
+
+  <param name="robot_description" command="$(find xacro)/xacro '$(find ur_desc)/urdf/ur5_robotiq_85/model_v.urdf'" />
+
+  <group unless="$(arg gzweb)">
+    <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model"
+      args="-urdf -param robot_description -model ur5_wh" respawn="false" output="screen" />
+  </group>
+
+  <node name="world_to_arm_base" pkg="tf" type="static_transform_publisher" args="0 -1 1 0 0 0 world base_link 100" />
+  <include file="$(find ur_gazebo)/launch/controller_utils.launch"/>
+
+  <rosparam file="$(find confgi)/config/controllers2.yaml" command="load"/>
+  <node name="arm_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller1" respawn="false" output="screen"/>
+
+</launch>

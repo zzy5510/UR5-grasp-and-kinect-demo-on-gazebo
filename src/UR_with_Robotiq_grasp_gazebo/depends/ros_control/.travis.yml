@@ -1,0 +1,32 @@
+# Travis Continuous Integration Configuration File For ROS Control Projects
+# Author: Dave Coleman
+sudo: required
+dist: trusty
+language: generic
+
+notifications:
+  email:
+    recipients:
+      - enrique.fernandez.perdomo@gmail.com
+      - bence.magyar.robotics@gmail.com
+      - gennaro.raiola@gmail.com
+    on_success: change #[always|never|change] # default: change
+    on_failure: change #[always|never|change] # default: always
+
+env:
+  global:
+    - UPSTREAM_WORKSPACE=file
+    - ROSINSTALL_FILENAME=ros_control.rosinstall
+    - ROS_PARALLEL_TEST_JOBS=-j1
+  matrix:
+    - ROS_DISTRO=kinetic ROS_REPO=ros
+    - ROS_DISTRO=kinetic ROS_REPO=ros-shadow-fixed
+    - ROS_DISTRO=lunar   ROS_REPO=ros-shadow-fixed
+matrix:
+  allow_failures:
+    - env: ROS_DISTRO=lunar   ROS_REPO=ros-shadow-fixed 
+  
+install:
+  - git clone https://github.com/ros-industrial/industrial_ci.git .ci_config
+script:
+  - .ci_config/travis.sh

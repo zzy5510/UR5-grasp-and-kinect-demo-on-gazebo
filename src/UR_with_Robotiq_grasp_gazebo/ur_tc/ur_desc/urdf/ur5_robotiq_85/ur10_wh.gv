@@ -1,0 +1,65 @@
+digraph G {
+node [shape=box];
+"world" [label="world"];
+"base_link" [label="base_link"];
+"base" [label="base"];
+"shoulder_link" [label="shoulder_link"];
+"upper_arm_link" [label="upper_arm_link"];
+"forearm_link" [label="forearm_link"];
+"wrist_1_link" [label="wrist_1_link"];
+"wrist_2_link" [label="wrist_2_link"];
+"wrist_3_link" [label="wrist_3_link"];
+"ee_link" [label="ee_link"];
+"robotiq_coupler_link" [label="robotiq_coupler_link"];
+"gripper_base_link" [label="gripper_base_link"];
+"gripper_finger1_inner_knuckle_link" [label="gripper_finger1_inner_knuckle_link"];
+"gripper_finger1_finger_tip_link" [label="gripper_finger1_finger_tip_link"];
+"gripper_finger1_knuckle_link" [label="gripper_finger1_knuckle_link"];
+"gripper_finger1_finger_link" [label="gripper_finger1_finger_link"];
+"gripper_finger2_inner_knuckle_link" [label="gripper_finger2_inner_knuckle_link"];
+"gripper_finger2_finger_tip_link" [label="gripper_finger2_finger_tip_link"];
+"gripper_finger2_knuckle_link" [label="gripper_finger2_knuckle_link"];
+"gripper_finger2_finger_link" [label="gripper_finger2_finger_link"];
+"tool0" [label="tool0"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"world" -> "world_joint" [label="xyz: 0 -1 1 \nrpy: 0 -0 0"]
+"world_joint" -> "base_link"
+"base_link" -> "base_link-base_fixed_joint" [label="xyz: 0 0 0 \nrpy: 0 0 3.14159"]
+"base_link-base_fixed_joint" -> "base"
+"base_link" -> "shoulder_pan_joint" [label="xyz: 0 0 0.1273 \nrpy: 0 -0 0"]
+"shoulder_pan_joint" -> "shoulder_link"
+"shoulder_link" -> "shoulder_lift_joint" [label="xyz: 0 0.220941 0 \nrpy: 0 1.5708 -0"]
+"shoulder_lift_joint" -> "upper_arm_link"
+"upper_arm_link" -> "elbow_joint" [label="xyz: 0 -0.1719 0.612 \nrpy: 0 -0 0"]
+"elbow_joint" -> "forearm_link"
+"forearm_link" -> "wrist_1_joint" [label="xyz: 0 0 0.5723 \nrpy: 0 1.5708 -0"]
+"wrist_1_joint" -> "wrist_1_link"
+"wrist_1_link" -> "wrist_2_joint" [label="xyz: 0 0.1149 0 \nrpy: 0 -0 0"]
+"wrist_2_joint" -> "wrist_2_link"
+"wrist_2_link" -> "wrist_3_joint" [label="xyz: 0 0 0.1157 \nrpy: 0 -0 0"]
+"wrist_3_joint" -> "wrist_3_link"
+"wrist_3_link" -> "ee_fixed_joint" [label="xyz: 0 0.0922 0 \nrpy: 0 -0 1.5708"]
+"ee_fixed_joint" -> "ee_link"
+"ee_link" -> "arm_to_hand" [label="xyz: 0 0 0 \nrpy: -1.5708 -2.06724e-13 1.5708"]
+"arm_to_hand" -> "robotiq_coupler_link"
+"robotiq_coupler_link" -> "gripper_base_joint" [label="xyz: 0 0 -0.05105 \nrpy: 0 1.5708 -0"]
+"gripper_base_joint" -> "gripper_base_link"
+"gripper_base_link" -> "gripper_finger1_inner_knuckle_joint" [label="xyz: 0.06142 0.0127 0 \nrpy: 3.1415 -0 0"]
+"gripper_finger1_inner_knuckle_joint" -> "gripper_finger1_inner_knuckle_link"
+"gripper_finger1_inner_knuckle_link" -> "gripper_finger1_finger_tip_joint" [label="xyz: 0.0430396 -0.0375994 0 \nrpy: 0 -0 0"]
+"gripper_finger1_finger_tip_joint" -> "gripper_finger1_finger_tip_link"
+"gripper_base_link" -> "gripper_finger1_joint" [label="xyz: 0.0549045 0.0306011 0 \nrpy: 3.1415 -0 0"]
+"gripper_finger1_joint" -> "gripper_finger1_knuckle_link"
+"gripper_finger1_knuckle_link" -> "gripper_finger1_finger_joint" [label="xyz: -0.00408552 -0.031486 0 \nrpy: 0 -0 0"]
+"gripper_finger1_finger_joint" -> "gripper_finger1_finger_link"
+"gripper_base_link" -> "gripper_finger2_inner_knuckle_joint" [label="xyz: 0.06142 -0.0127 0 \nrpy: 0 -0 0"]
+"gripper_finger2_inner_knuckle_joint" -> "gripper_finger2_inner_knuckle_link"
+"gripper_finger2_inner_knuckle_link" -> "gripper_finger2_finger_tip_joint" [label="xyz: 0.0430396 -0.0375994 0 \nrpy: 0 -0 0"]
+"gripper_finger2_finger_tip_joint" -> "gripper_finger2_finger_tip_link"
+"gripper_base_link" -> "gripper_finger2_joint" [label="xyz: 0.0549045 -0.0306011 0 \nrpy: 0 -0 0"]
+"gripper_finger2_joint" -> "gripper_finger2_knuckle_link"
+"gripper_finger2_knuckle_link" -> "gripper_finger2_finger_joint" [label="xyz: -0.00408552 -0.031486 0 \nrpy: 0 -0 0"]
+"gripper_finger2_finger_joint" -> "gripper_finger2_finger_link"
+"wrist_3_link" -> "wrist_3_link-tool0_fixed_joint" [label="xyz: 0 0.0922 0 \nrpy: -1.5708 0 0"]
+"wrist_3_link-tool0_fixed_joint" -> "tool0"
+}

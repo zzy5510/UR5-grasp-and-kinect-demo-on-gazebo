@@ -1,0 +1,4 @@
+ <launch>
+ <include file="$(find confgi)/launch/planning_execution.launch" />
+ <node name ="pcl_transform" pkg ="smart_grasping_sandbox_sample" type ="pcltrans.py" />
+</launch>

@@ -1,0 +1,82 @@
+#! /usr/bin/env python
+
+# Copyright (c) 2008, Willow Garage, Inc.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of the Willow Garage, Inc. nor the names of its
+#       contributors may be used to endorse or promote products derived from
+#       this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+# Stops a set of controllers until killed
+#
+# Author: Stuart Glaser
+
+from __future__ import print_function
+import sys
+import rospy
+from controller_manager_msgs.srv import *
+
+def main():
+    rospy.init_node("unspawner", anonymous=True)
+
+    switch_controller = rospy.ServiceProxy('controller_manager/switch_controller', SwitchController)
+    list_controllers = rospy.ServiceProxy('controller_manager/list_controllers', ListControllers)
+    inhibited = set()
+
+    switch_controller.wait_for_service()
+    list_controllers.wait_for_service()
+
+    to_inhibit = set(rospy.myargv())
+
+    def stop_controllers(*argc):
+        to_stop = to_inhibit & set(cs.name for cs in list_controllers().controller if cs.state == 'running')
+
+        if to_stop:
+            rospy.logout("Inhibiting controllers: %s" % ', '.join(to_stop))
+            switch_controller(strictness = SwitchControllerRequest.BEST_EFFORT,
+                              stop_controllers = list(to_stop))
+            inhibited.update(to_stop)
+
+    stop_controllers()
+    timer = rospy.Timer(rospy.Duration(3), stop_controllers)
+
+    def restart_controllers():
+        timer.shutdown()
+        # Re-starts inhibited controllers
+        switch_controller(strictness = SwitchControllerRequest.BEST_EFFORT,
+                          start_controllers = list(inhibited))
+
+    rospy.on_shutdown(restart_controllers)
+    rospy.spin()
+
+def print_help():
+    print('./unspawner name1 name2 name3')
+    print('')
+    print('\tStops a set of controllers until killed.')
+    print('\tUseful in roslaunch files to temporarily stop controllers')
+
+if __name__ == '__main__':
+    if len(sys.argv) == 1 or sys.argv[1] == '-h' or sys.argv[1] == '--help':
+        print_help()
+        sys.exit(1)
+    main()
